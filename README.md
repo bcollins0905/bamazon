@@ -3,4 +3,4 @@ amazon-like-web-app
 
 Note the quantity change in line item 1:
 
-.../bamazon/images/working_bamazon.png
+https://github.com/bcollins0905/bamazon/blob/master/images/working_bamazon.png
