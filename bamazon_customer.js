@@ -41,29 +41,43 @@ function myTable(){
       }
       console.log(table.toString());
       idPromptSearch(result)
-      // stockPromptSearch()
     })
 }
 
 
 //----------------------Creating Prompts-----------------------------------------------
-
-  function idPromptSearch(inventory) {
+  function idPromptSearch(inventory, inStock) {
   inquirer
-    .prompt({
+    .prompt([
+    {    
       name: "id",
       type: "input",
       message: "What is the ID of the product you would like to buy?"
-    })
+    },
 
-    .then(function(val) {
-      console.log(val.id)
+    {
+      name: "quantity",
+      type: "input",
+      message: "How many units would you like to buy?"
+    }
+  ])  
+    
+    .then(function(val, stock, inStock, myTable) {
+      
       var userChoice = parseInt(val.id)
       var matchedProduct = checkInventory(userChoice, inventory)
-      console.log(matchedProduct)
-      })
+      var desiredQuantity = parseInt(val.quantity)
+      if (desiredQuantity <= matchedProduct.stock_quantity)
+        console.log("Thank you for your purchase")
+        console.log("Your total is $"+ matchedProduct.price * desiredQuantity)
+        var updateQueryStr = 'UPDATE products SET stock_quantity = ' + (matchedProduct.stock_quantity - desiredQuantity) + ' WHERE item_id = ' + val.id;
 
-  function checkInventory(userChoice, inventory){
+        connection.query(updateQueryStr, function(err, data) {
+        if (err) throw err;
+        })
+      })
+    }
+function checkInventory(userChoice, inventory){
     for (var i = 0; i < inventory.length; i++) {   
     if(inventory[i].item_id === userChoice){
       return inventory[i]
@@ -71,31 +85,5 @@ function myTable(){
         }
       return null
   }
-}
 
-//   function stockPromptSearch(){
-//   inquirer
-//     .prompt({
-//       name: "quantity",
-//       type: "input",
-//       message: "How many units would you like to purchase?"
-//     })
-    
-//     .then(function(val) {
-//       console.log(val.quantity)
-//       var chosenQty = parseInt(val.quantity)
-//       var matchedQuantity = checkQuantity(chosenQty, stock)
-//       console.log(matchedQuantity)
-//     })  
-// }
 
-//   function checkQuantity(chosenQty, stock){
-//     for (var i = 0; i < inventory.length; i++) {
-//     if(inventory[i].stock_quantity >= userChoice){
-//       console.log("Your purchase is complete")
-//         }
-//       }
-//     } 
-
- 
- 
