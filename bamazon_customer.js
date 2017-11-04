@@ -76,7 +76,9 @@ function myTable(){
         if (err) throw err;
         })
       })
-    }
+    } 
+
+
 function checkInventory(userChoice, inventory){
     for (var i = 0; i < inventory.length; i++) {   
     if(inventory[i].item_id === userChoice){
