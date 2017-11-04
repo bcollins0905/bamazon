@@ -46,7 +46,7 @@ function myTable(){
 
 
 //----------------------Creating Prompts-----------------------------------------------
-  function idPromptSearch(inventory, inStock) {
+  function idPromptSearch(inventory) {
   inquirer
     .prompt([
     {    
@@ -67,10 +67,12 @@ function myTable(){
       var userChoice = parseInt(val.id)
       var matchedProduct = checkInventory(userChoice, inventory)
       var desiredQuantity = parseInt(val.quantity)
-      if (desiredQuantity <= matchedProduct.stock_quantity)
+      if (desiredQuantity <= matchedProduct.stock_quantity){
         console.log("Thank you for your purchase")
         console.log("Your total is $"+ matchedProduct.price * desiredQuantity)
         var updateQueryStr = 'UPDATE products SET stock_quantity = ' + (matchedProduct.stock_quantity - desiredQuantity) + ' WHERE item_id = ' + val.id;
+        //idPromptSearch(inventory)
+      }else{console.log("Please reduce the quantity of the item you are purchasing.")}
 
         connection.query(updateQueryStr, function(err, data) {
         if (err) throw err;
